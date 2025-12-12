@@ -1,0 +1,53 @@
+# ===============================
+# .NET / C#
+# ===============================
+bin/
+obj/
+out/
+*.dll
+*.exe
+*.pdb
+
+# Rider / Visual Studio
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ASP.NET Core
+appsettings.Development.json
+appsettings.Local.json
+
+# ===============================
+# Node / Frontend (future)
+# ===============================
+node_modules/
+dist/
+build/
+.vite/
+
+# ===============================
+# Environment / Secrets
+# ===============================
+.env
+.env.*
+secrets.json
+
+# ===============================
+# OS / Editor
+# ===============================
+.DS_Store
+Thumbs.db
+
+# ===============================
+# Logs
+# ===============================
+*.log
+
+# ===============================
+# Test results
+# ===============================
+TestResults/
+coverage/
