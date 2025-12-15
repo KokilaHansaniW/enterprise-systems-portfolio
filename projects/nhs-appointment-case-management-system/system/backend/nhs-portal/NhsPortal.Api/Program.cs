@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NhsPortal.Domain.Persistence;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
