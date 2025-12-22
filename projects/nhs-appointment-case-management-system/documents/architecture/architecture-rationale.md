@@ -1,12 +1,27 @@
-# Architecture Rationale — NHS Appointment & Case Management System
+# Architecture Rationale
 
-NHS digital services operate in an environment where **accessibility, auditability and defensibility** are mandatory. Technical choices are not driven by developer convenience, but by **traceability and risk minimisation**.
+## Context
+This system targets regulated, high-assurance environments where behaviour must be verifiable, change must be controlled, and auditability must be explicit.
 
-The architecture for the NHS Appointment & Case Management System is intentionally compliance-driven:
+## Architectural approach
+The solution is structured into clear boundaries:
 
-- **Clean separation of concerns** (API, Domain, Infrastructure, Tests) allows changes to hosting, storage, or integrations without destabilising core clinical workflows.
-- **Domain-centric design** keeps appointment, patient and clinician rules in a dedicated domain layer, making behaviour easy to review, test and audit.
-- **Azure-ready deployment** ensures the system can be hosted in UK regions with NHS-aligned security and governance controls.
-- **Logging and observability** are treated as first-class concerns so that every critical action can be traced to a user, time and rationale.
+- **Domain**: entities, value objects, invariants, and business rules
+- **API**: HTTP endpoints and request/response contracts
+- **Persistence**: EF Core used to support a working vertical slice
 
-Compliance standards such as **WCAG 2.2**, **UK GDPR** and **ITIL-aligned service operations** are treated as architectural constraints, not afterthoughts. The system is designed so that it can withstand technical scrutiny, clinical governance review and external audit while remaining maintainable and evolvable over time.
+The intent is to protect core business behaviour from infrastructure volatility and enable predictable evolution.
+
+## Why this approach
+- **Change isolation**: persistence/integration changes should not force domain rewrites
+- **Testability**: business rules can be validated independently of HTTP/database
+- **Governance readiness**: consistent enforcement points for audit and policy
+- **Operational clarity**: boundaries support faster incident triage and ownership clarity
+
+## Why not microservices initially
+Microservices add distributed complexity (network reliability, versioned contracts, monitoring overhead). The initial focus is a stable, auditable vertical slice with clean boundaries. Decomposition is a later optimisation once domain boundaries and integration points mature.
+
+## Compliance considerations (high level)
+- Auditability (who/what/when)
+- Data protection by design (minimise exposure of sensitive data)
+- Traceability via commits, pull requests, and decision records (ADRs)
