@@ -141,6 +141,17 @@ You should see something like:
 Now listening on: http://localhost:5170
 Application started. Press Ctrl+C to shut down.
 
+## API Exploration
+
+The API exposes a Swagger/OpenAPI interface for local development and inspection.
+
+When running locally, the API documentation is available at:
+
+http://localhost:5170/swagger/index.html
+
+This interface allows inspection and testing of available endpoints without requiring a separate client application.
+
+
 3. Test the health endpoint
 
 Open in browser or Postman:
