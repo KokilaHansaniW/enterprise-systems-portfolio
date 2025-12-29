@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/NhsPortal.Application/NhsPortal.Application.csproj" />
+    <Project Path="src/NhsPortal.Infrastructure/NhsPortal.Infrastructure.csproj" />
+  </Folder>
+  <Project Path="NhsPortal.Api/NhsPortal.Api.csproj" />
+  <Project Path="NhsPortal.Domain/NhsPortal.Domain.csproj" />
+</Solution>

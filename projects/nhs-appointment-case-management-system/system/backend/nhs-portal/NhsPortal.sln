@@ -1,4 +1,0 @@
-<Solution>
-  <Project Path="NhsPortal.Api/NhsPortal.Api.csproj" />
-  <Project Path="NhsPortal.Domain/NhsPortal.Domain.csproj" />
-</Solution>

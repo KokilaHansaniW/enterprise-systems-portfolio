@@ -1,15 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using NhsPortal.Domain.Persistence;
 using NhsPortal.Domain.Entities;
-
-
+using NhsPortal.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
-builder.Services.AddDbContext<NhsDbContext>(options =>
-options.UseInMemoryDatabase("NhsPortal"));
+builder.Services.AddDbContext<NhsDbContext>(opt =>
+    opt.UseSqlite(builder.Configuration.GetConnectionString("NhsPortalDb")));
 
 var app = builder.Build();
 
@@ -47,7 +45,7 @@ app.MapGet("/health", () =>
 // APPOINTMENT CRUD
 
 // Create appointment
-app.MapPost("/appoinments",async (NhsDbContext db, Appointment appt) =>
+app.MapPost("/appoinments", async (NhsDbContext db, Appointment appt) =>
 {
     if (appt.ScheduledAt < DateTime.UtcNow)
         return Results.BadRequest("Appointment must be in the future.");
