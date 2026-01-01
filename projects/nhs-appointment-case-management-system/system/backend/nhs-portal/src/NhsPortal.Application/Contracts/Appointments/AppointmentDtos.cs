@@ -1,13 +1,13 @@
 namespace NhsPortal.Application.Contracts.Appointments;
 
-public record CreateAppointmentRequest(
+public sealed record CreateAppointmentRequest(
     int PatientId,
     int ClinicianId,
     DateTime ScheduledAtUtc,
     string? Notes
 );
 
-public record AppointmentResponse(
+public sealed record AppointmentResponse(
     int Id,
     int PatientId,
     int ClinicianId,
