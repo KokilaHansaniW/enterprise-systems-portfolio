@@ -1,20 +1,23 @@
-# ADR-0001: Architecture Style for NHS Portal
+# ADR-0001: Architecture Style Selection
 
 ## Status
 Accepted
 
 ## Context
-The system must support change tolerance, clear boundaries, and testable business behaviour, and is expected to evolve toward persistence, integrations, and governance constraints.
+This system supports appointment management in a healthcare context where
+auditability, testability, and separation of concerns are essential.
 
 ## Decision
-Adopt a layered approach to keep domain rules independent from transport and infrastructure concerns.
+The system follows Clean Architecture principles:
+- Domain-centric design
+- Application services orchestrate use cases
+- Infrastructure concerns isolated
+
+## Alternatives Considered
+- Layered architecture
+- Monolithic MVC
 
 ## Consequences
-### Positive
-- Better testability of business rules
-- Reduced coupling to persistence/integration choices
-- Clearer governance enforcement points
-
-### Negative
-- More structure than a single minimal API project
-- Requires discipline to maintain boundaries
+- Higher initial structure cost
+- Strong governance alignment
+- Easier testing and regulatory compliance

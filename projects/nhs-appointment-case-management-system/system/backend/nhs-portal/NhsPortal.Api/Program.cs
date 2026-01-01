@@ -8,6 +8,10 @@ using NhsPortal.Application.Auditing;
 using NhsPortal.Infrastructure.Persistence;
 using NhsPortal.Infrastructure.Persistence.Repositories;
 using NhsPortal.Infrastructure.Auditing;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +29,38 @@ builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<NhsPortal.Application.Contracts.Appointments.IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IAuditWriter, EfAuditWriter>();
 
+var auth = builder.Configuration.GetSection("Auth");
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(o =>
+    {
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ValidIssuer = auth["Issuer"],
+            ValidAudience = auth["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(auth["SigningKey"]!)
+            )
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", p => p.RequireRole("Admin"));
+    options.AddPolicy("ClinicianOrAdmin", p => p.RequireRole("Clinician", "Admin"));
+});
+
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseExceptionHandler();
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -61,7 +96,7 @@ app.MapPost("/appointments", async (
     var actor = ctx.User.Identity?.Name ?? "anonymous";
     var created = await service.CreateAsync(req, actor, CorrelationId(ctx), ct);
     return Results.Created($"/appointments/{created.Id}", created);
-});
+}).RequireAuthorization("ClinicianOrAdmin");
 
 
 // Get all appointments
@@ -79,7 +114,7 @@ app.MapPatch("/appointments/{id:int}/status", async (int id, string status, IApp
     var actor = ctx.User.Identity?.Name ?? "anonymous";
     var updated = await service.UpdateStatusAsync(id, status, actor, CorrelationId(ctx), ct);
     return updated is null ? Results.NotFound() : Results.Ok(updated);
-});
+}).RequireAuthorization("ClinicianOrAdmin");
 
 // Delete
 app.MapDelete("/appointments/{id:int}", async (int id, IAppointmentService service, HttpContext ctx, CancellationToken ct) =>
@@ -87,6 +122,6 @@ app.MapDelete("/appointments/{id:int}", async (int id, IAppointmentService servi
     var actor = ctx.User.Identity?.Name ?? "anonymous";
     var ok = await service.DeleteAsync(id, actor, CorrelationId(ctx), ct);
     return ok ? Results.NoContent() : Results.NotFound();
-});
+}).RequireAuthorization("AdminOnly");
 
 app.Run();

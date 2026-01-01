@@ -1,13 +1,20 @@
-# ITIL Service Model Mapping
+# ITIL Service Model Alignment
 
-## Service view
-- **Service**: NHS Portal (Appointment & Case Management capability)
-- **Service Request**: create/reschedule/cancel appointment
-- **Incident**: portal outage, booking failures, degraded performance
-- **Problem**: recurring incidents caused by underlying defect
-- **Change**: modification affecting workflow, persistence, or integrations
+## Service View
+- **Service**: NHS Appointment & Case Management Portal
+- **Service Requests**: Create, reschedule, cancel appointments
+- **Incidents**: Portal outages, booking failures, degraded performance
+- **Problems**: Recurring incidents caused by underlying defects
+- **Changes**: Modifications affecting workflows, persistence, or integrations
 
-## Change enablement approach
-- Delivered via feature branches + pull requests
-- PRs require documentation and tests where applicable
-- Release governance added incrementally as the system evolves
+## Change Enablement Approach
+- Changes are delivered via feature branches and pull requests
+- Pull requests require review and documentation where applicable
+- Testing and validation are expected before merge
+- Release governance is introduced incrementally as the system evolves
+
+## Operational Alignment
+The system supports ITIL principles through:
+- Incident traceability via correlation IDs
+- Change accountability via versioned services
+- Service transparency through structured audit logs

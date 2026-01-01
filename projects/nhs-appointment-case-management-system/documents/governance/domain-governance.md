@@ -1,17 +1,26 @@
 # Domain Governance
 
 ## Purpose
-Domain governance defines controls that prevent invalid state and reduce operational risk.
+Domain governance defines rules and constraints that prevent invalid state transitions and reduce operational risk.
 
-## Appointment workflow governance
-Status-controlled lifecycle supports correctness, traceability, and operational clarity.
+## Governance Principles
+- Business rules are enforced in the domain layer
+- Infrastructure cannot alter domain behaviour
+- Application services orchestrate but do not bypass domain rules
 
-## Minimum audit fields (boundary enforced)
+## Appointment Lifecycle Governance
+Appointments follow a controlled status lifecycle to ensure:
+- Correctness of state transitions
+- Traceability of changes
+- Operational clarity
+
+## Minimum Audit Boundary
+All domain state changes must be traceable with at least:
 - Timestamp (UTC)
-- Action type (Create/Update/Delete/StatusChange)
+- Action type (Create, Update, Delete, StatusChange)
 - Entity identifier
-- Actor identity (placeholder until auth is implemented)
-- Correlation/Trace Id
+- Actor identity (placeholder until authentication is integrated)
+- Correlation / Trace ID
 
 ## Rationale
-In regulated environments, correctness and traceability must be systematic rather than ad-hoc.
+In regulated systems, correctness and traceability must be systematic rather than ad-hoc. Domain governance ensures consistent behaviour regardless of infrastructure or interface changes.
