@@ -6,10 +6,10 @@ namespace NhsPortal.Application.Appointments;
 
 public sealed class AppointmentService : IAppointmentService
 {
-    private readonly IAppointmentRepository _repo;
+    private readonly NhsPortal.Application.Contracts.Appointments.IAppointmentRepository _repo;
     private readonly IAuditWriter _audit;
 
-    public AppointmentService(IAppointmentRepository repo, IAuditWriter audit)
+    public AppointmentService(NhsPortal.Application.Contracts.Appointments.IAppointmentRepository repo, IAuditWriter audit)
     {
         _repo = repo;
         _audit = audit;
