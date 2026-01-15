@@ -20,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Swagger (with JWT support in UI)
 // --------------------
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(o =>
 {
     o.SwaggerDoc("v1", new OpenApiInfo
@@ -40,7 +41,11 @@ builder.Services.AddSwaggerGen(o =>
         Description = "Enter: Bearer {token}"
     });
 
+
+
 });
+
+
 
 // --------------------
 // Database (SQLite for portfolio reliability)
@@ -103,10 +108,24 @@ var app = builder.Build();
 app.UseExceptionHandler();
 
 // Swagger: enable for portfolio (dev-friendly)
-app.UseSwagger();
-app.UseSwaggerUI();
+// app.UseSwagger();
+// app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "NHS Portal API v1");
+
+    // keep auth across refresh
+    c.ConfigObject.PersistAuthorization = true;
+
+    // Single-line interceptor to avoid JSON.parse errors
+    c.UseRequestInterceptor("function (req) { var t = window.localStorage.getItem('nhsportal_token'); if (t) { req.headers['Authorization'] = t; } return req; }");
+});
+
+
+
+// app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
